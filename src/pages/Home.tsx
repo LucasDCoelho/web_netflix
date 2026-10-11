@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+const CHAVE = "filmes-favoritos";
 
 export default function Home() {
     const [filmes, setFilmes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState("");
+
+    const [favoritos, setFavoritos] = useState(
+        () => JSON.parse(localStorage.getItem(CHAVE) || "[]")
+    );
 
     useEffect(() => {
         async function fetchFilmes() {
@@ -29,6 +34,19 @@ export default function Home() {
         fetchFilmes()
     }, []);
 
+    useEffect(() => {
+        localStorage.setItem(CHAVE, JSON.stringify(favoritos));
+    }, [favoritos]);
+
+    function alternarFavorito(filme) {
+        setFavoritos((atuais) =>
+            atuais.some((f) => f.id === filme.id)
+                ? atuais.filter((f) => f.id !== filme.id)
+                : [...atuais, filme]
+
+        );
+    }
+
     if (loading) {
         return <p className="text-center mt-10 text-neutral-400">Carregando filmes...</p>
     }
@@ -42,7 +60,12 @@ export default function Home() {
             <h1 className="text-2xl font-bold mb-6">Filmes populares</h1>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {filmes.map((filme) => (
-                    <MovieCard key={filme.id} filme={filme} />
+                    <MovieCard
+                        key={filme.id}
+                        filme={filme}
+                        favorito={favoritos.some((f) => f.id === filme.id)}
+                        onAlternarFavorito={() => alternarFavorito(filme)}
+                    />
                 ))}
             </div>
         </section>
