@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
+import type { Filme } from "../types";
 
 export default function Favoritos() {
-    const [favoritos, setFavoritos] = useState([]);
+    const [favoritos, setFavoritos] = useState<Filme[]>([]);
 
     useEffect(() => {
         const salvos = JSON.parse(localStorage.getItem("filmes-favoritos") || "[]");
         setFavoritos(salvos);
     }, []);
 
-    function removerFavorito(id) {
+    function removerFavorito(id: number) {
         const novos = favoritos.filter((f) => f.id !== id);
         setFavoritos(novos);
         localStorage.setItem("filmes-favoritos", JSON.stringify(novos));

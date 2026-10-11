@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import type { FilmeDetalhes } from "../types";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
 export default function Detalhes() {
     const { id } = useParams();
-    const [filme, setFilme] = useState(null);
+    const [filme, setFilme] = useState<FilmeDetalhes | null>(null);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState("");
 

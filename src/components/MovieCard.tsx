@@ -1,6 +1,13 @@
 import { Link } from "react-router"
+import type { Filme } from "../types";
 
-export default function MovieCard({ filme, favorito, onAlternarFavorito }) {
+interface MovieCardProps {
+    filme: Filme;
+    favorito?: boolean;
+    onAlternarFavorito?: () => void;
+}
+
+export default function MovieCard({ filme, favorito, onAlternarFavorito }: MovieCardProps) {
 
     const poster = filme.poster_path
         ? `https://image.tmdb.org/t/p/w500${filme.poster_path}`

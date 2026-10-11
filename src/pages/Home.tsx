@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import MovieCard from "../components/MovieCard";
+import type { Filme } from "../types";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const CHAVE = "filmes-favoritos";
 
 export default function Home() {
-    const [filmes, setFilmes] = useState([]);
+    const [filmes, setFilmes] = useState<Filme[]>([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState("");
 
-    const [favoritos, setFavoritos] = useState(
+    const [favoritos, setFavoritos] = useState<Filme[]>(
         () => JSON.parse(localStorage.getItem(CHAVE) || "[]")
     );
 
@@ -38,8 +39,8 @@ export default function Home() {
         localStorage.setItem(CHAVE, JSON.stringify(favoritos));
     }, [favoritos]);
 
-    function alternarFavorito(filme) {
-        setFavoritos((atuais) =>
+    function alternarFavorito(filme: Filme) {
+        setFavoritos((atuais: Filme[]) =>
             atuais.some((f) => f.id === filme.id)
                 ? atuais.filter((f) => f.id !== filme.id)
                 : [...atuais, filme]
@@ -59,7 +60,7 @@ export default function Home() {
         <section>
             <h1 className="text-2xl font-bold mb-6">Filmes populares</h1>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {filmes.map((filme) => (
+                {filmes.map((filme: Filme) => (
                     <MovieCard
                         key={filme.id}
                         filme={filme}

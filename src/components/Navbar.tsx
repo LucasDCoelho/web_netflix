@@ -1,6 +1,6 @@
 import { NavLink } from "react-router"
 
-const classeLink = ({ isActive }) =>
+const classeLink = ({ isActive }: { isActive: boolean }) =>
     `pb-1 transition-colors ${isActive
         ? 'text-yellow-400 font-semibold border-b-2 border-yellow-400'
         : 'text-neutral-400 hover:text-neutral-100'

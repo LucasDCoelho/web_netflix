@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import MovieCard from "../components/MovieCard";
+import type { Filme } from "../types";
 
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const CHAVE = "filmes-favoritos";
@@ -10,11 +11,11 @@ export default function Buscar() {
     const [searchParams, setSearchParams] = useSearchParams();
     const query = searchParams.get("q") || "";
 
-    const [filmes, setFilmes] = useState([]);
+    const [filmes, setFilmes] = useState<Filme[]>([]);
     const [loading, setLoading] = useState(true);
     const [erro, setErro] = useState("");
 
-    const [favoritos, setFavoritos] = useState(
+    const [favoritos, setFavoritos] = useState<Filme[]>(
         () => JSON.parse(localStorage.getItem(CHAVE) || "[]")
     );
 
@@ -54,7 +55,7 @@ export default function Buscar() {
         localStorage.setItem(CHAVE, JSON.stringify(favoritos));
     }, [favoritos]);
 
-    function alternarFavorito(filme) {
+    function alternarFavorito(filme: Filme) {
         setFavoritos((atuais) =>
             atuais.some((f) => f.id === filme.id)
                 ? atuais.filter((f) => f.id !== filme.id)
@@ -63,7 +64,7 @@ export default function Buscar() {
         );
     }
 
-    function handleSubmit(event) {
+    function handleSubmit(event: any) {
         event.preventDefault();
         const texto = event.target.query.value;
         setSearchParams({ q: texto });
